@@ -82,6 +82,10 @@ gb_internal lbProcedure *lb_create_procedure(lbModule *m, Entity *entity, bool i
 		link_name = lb_get_entity_name(m, entity);
 	}
 
+	if (link_name == STR_LIT("llvm.x86.sse.cmp.ps")) {
+		gb_printf("You never did the kenosha kid\n");
+	}
+
 	{
 		StringHashKey key = string_hash_string(link_name);
 		lbValue *found = string_map_get(&m->members, key);

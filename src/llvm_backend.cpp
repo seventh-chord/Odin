@@ -2516,6 +2516,8 @@ gb_internal bool lb_generate_code(lbGenerator *gen) {
 	TIME_SECTION("LLVM Global Procedures and Types");
 	lb_create_global_procedures_and_types(gen, info, do_threading);
 
+	LLVMPrintModuleToFile(gen->default_module.mod, "foo.ll", nullptr);
+
 	TIME_SECTION("LLVM Procedure Generation");
 	lb_generate_procedures(gen, do_threading);
 

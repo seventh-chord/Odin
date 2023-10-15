@@ -482,6 +482,8 @@ namespace lbAbiAmd64Win64 {
 					args[i] = lb_arg_type_indirect(t, nullptr);
 					break;
 				}
+			} else if (kind == LLVMVectorTypeKind) {
+				args[i] = lb_arg_type_direct(t, nullptr, nullptr, nullptr);
 			} else {
 				args[i] = lbAbi386::non_struct(c, t, false);
 			}
