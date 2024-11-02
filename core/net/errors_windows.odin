@@ -159,8 +159,8 @@ UDP_Send_Error :: enum c.int {
 	Aborted                   = win.WSAECONNABORTED,
 	Message_Too_Long          = win.WSAEMSGSIZE, 	 // The message is larger than the maximum UDP packet size.
 	Remote_Not_Listening      = win.WSAECONNRESET,   // The machine at the remote endpoint doesn't have the given port open to receiving UDP data.
-	Shutdown                  = win.WSAESHUTDOWN,    // A broadcast address was specified, but the .Broadcast socket option isn't set.
-	Broadcast_Disabled        = win.WSAEACCES,
+	Shutdown                  = win.WSAESHUTDOWN,
+	Broadcast_Disabled        = win.WSAEACCES,       // A broadcast address was specified, but the .Broadcast socket option isn't set.
 	Bad_Buffer                = win.WSAEFAULT,       // Connection is broken due to keepalive activity detecting a failure during the operation.
 
 	// TODO: not functionally different from Reset; merge?

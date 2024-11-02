@@ -92,8 +92,31 @@ _enumerate_interfaces :: proc(allocator := context.allocator) -> (interfaces: []
 		for u_addr := (^sys.IP_ADAPTER_UNICAST_ADDRESS_LH)(adapter.FirstUnicastAddress); u_addr != nil; u_addr = u_addr.Next {
 			win_addr := parse_socket_address(u_addr.Address)
 
+			netmask: Netmask
+			switch _ in win_addr.address {
+			case IP4_Address:
+				if 0 <= u_addr.OnLinkPrefixLength && u_addr.OnLinkPrefixLength <= 32 {
+					netmask_address: IP4_Address
+					prefix := int(u_addr.OnLinkPrefixLength)
+					for i in 0..<4 {
+						netmask_address[i] = 0xff << uint(max(8*(i+1) - prefix, 0))
+					}
+					netmask = netmask_address
+				}
+			case IP6_Address:
+				if 0 <= u_addr.OnLinkPrefixLength && u_addr.OnLinkPrefixLength <= 128 {
+					netmask_address: IP6_Address
+					prefix := int(u_addr.OnLinkPrefixLength)
+					for i in 0..<8 {
+						netmask_address[i] = 0xffff << uint(max(16*(i+1) - prefix, 0))
+					}
+					netmask = netmask_address
+				}
+			}
+
 			lease := Lease{
 				address = win_addr.address,
+				netmask = netmask,
 				origin  = {
 					prefix = Prefix_Origin(u_addr.PrefixOrigin),
 					suffix = Suffix_Origin(u_addr.SuffixOrigin),
